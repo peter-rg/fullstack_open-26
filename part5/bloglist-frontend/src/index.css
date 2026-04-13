@@ -1,0 +1,31 @@
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* width: auto; */
+  background-color: #e0ecc2;
+  margin: 0;
+}
+
+.blog-app{
+  background-color: #ffffff7e;
+  padding: 2rem;
+  width: 100%;
+  max-width: 480;
+  box-shadow: 0 4px 8px rgba(0,0,0, 0.08);
+}
+.blogs{
+  background-color: #ffffffce;
+  border: 2px;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.blog{
+  margin: 8px;
+  padding: 5px;
+  border: 2px solid;
+  border-radius: 8px;
+}

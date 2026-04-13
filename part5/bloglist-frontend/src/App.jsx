@@ -6,6 +6,8 @@ import blogService from './services/blogs'
 import Notifications from './components/Notifications'
 import Toggable from './components/Toggable'
 
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
@@ -57,7 +59,7 @@ const App = () => {
 
   const orderBlogsByLikes = blogs.toSorted((a,b) => b.likes - a.likes)
   return (
-    <div>
+    <div className='blog-app'>
       <Notifications message={message}/>
 
       {user === null
@@ -87,13 +89,15 @@ const App = () => {
         )
       }
       <h2>blogs</h2>
-      {
-        orderBlogsByLikes.map(blog =>
-          <Blog key={blog.id} blog={blog} user={user}
-            updateLikes={updateLikes} deleteBlog={deleteBlog}
-          />
-        )
-      }
+      <div className='blogs'>
+        {
+          orderBlogsByLikes.map(blog =>
+            <Blog key={blog.id} blog={blog} user={user}
+              updateLikes={updateLikes} deleteBlog={deleteBlog}
+            />
+          )
+        }
+      </div>
     </div>
   )
 }
