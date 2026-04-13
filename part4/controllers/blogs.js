@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const {userExtractor} = require('../utils/middleware')
 const Blog = require('../models/blog.model')
 const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
@@ -9,19 +10,16 @@ blogsRouter.get('/', async(req,res)=>{
 })
 blogsRouter.get('/:id', async(req,res)=>{
   const blog = await Blog.findById(req.params.id)
+  if(!blog){
+    return res.status(404).json({error: 'Blog not found'})
+  }
   res.status(200).json(blog)
 })
 
-blogsRouter.post('/', async(req,res)=>{
+blogsRouter.post('/', userExtractor, async(req,res)=>{
   const {title, author, url, likes} = req.body
 
-  // check validity of token 
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
-  if(!decodedToken.id){
-    res.status(401).json({error: 'Missing or invalid token'})
-  }
-  const user = await User.findById(decodedToken.id)
-  if (!user) {
+  if (!req.user) {
     return res.status(404).json({ error: "user not found" })
   }
 
@@ -30,30 +28,31 @@ blogsRouter.post('/', async(req,res)=>{
     author,
     url,
     likes,
-    user: user._id
+    user: req.user._id
   })
 
   const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog._id)
-  await user.save() 
+  req.user.blogs = req.user.blogs.concat(savedBlog._id)
+  await req.user.save() 
   res.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async(req,res) => {
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
-  if(!decodedToken.id){
-    return res.status(401).json({error: "Token missing or invalid"})
+blogsRouter.delete('/:id', userExtractor, async(req,res) => {
+  if(!req.user){
+    return res.status(401).json({error: 'token missing or invalid'})
   }
   const blog = await Blog.findById(req.params.id)
   if(!blog){
     return res.status(404).json({error: 'blog not found'})
   }
-  if(decodedToken.id === blog.user.toString()){
-    await Blog.deleteOne(blog)
+  if(req.user.id === blog.user.toString()){
+    req.user.blogs.pull(blog._id) //remove the blog reference in the array
+    await req.user.save() //save user to reflect changes in blogs field
+    await blog.deleteOne()
     return res.status(204).end()
   }
   else{
-    return res.status(401).json({error: "Can't delete someone else blog"})
+    return res.status(401).json({error: "only the creator can delete this blog"})
   }
 })
 
