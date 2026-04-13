@@ -3,7 +3,7 @@ const Blog = require('../models/blog.model')
 const User = require('../models/user.model')
 
 blogsRouter.get('/', async(req,res)=>{
-  const blogs = await Blog.find({}).populate("user") 
+  const blogs = await Blog.find({}).populate("user", {blogs: 0}) 
   res.status(200).json(blogs)
 })
 blogsRouter.get('/:id', async(req,res)=>{
