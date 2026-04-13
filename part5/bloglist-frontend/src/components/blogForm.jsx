@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-function BlogForm({setBlogs, notify}) {
+function BlogForm({setBlogs,blogs, notify}) {
    const [newBlog, setNewBlog] = useState({
       title: '',
       author: '',
@@ -33,6 +33,7 @@ function BlogForm({setBlogs, notify}) {
       notify(error.response?.data?.error, false)
     }
   }
+ 
 
   return (
     <div>
