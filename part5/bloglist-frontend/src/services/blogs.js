@@ -19,4 +19,14 @@ const create = async(newBlog) => {
   return response.data
 }
 
-export default { getAll, create, setToken }
+const update = async(id, blogUpdate) => {
+  const response = await axios.put(`${baseUrl}/${id}`, blogUpdate)
+  return response.data
+}
+
+const deleteBlog = async(id) => {
+  const res  = await axios
+    .delete(`${baseUrl}/${id}`, {headers : {'Authorization': token}})
+  console.log("first: ", res)
+}
+export default { getAll, create, update, deleteBlog, setToken }

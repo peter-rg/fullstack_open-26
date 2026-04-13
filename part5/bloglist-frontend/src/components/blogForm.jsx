@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-function BlogForm({setBlogs,blogs, notify}) {
+function BlogForm({setBlogs, blogFormRef, notify}) {
    const [newBlog, setNewBlog] = useState({
       title: '',
       author: '',
       url: ''
     })
 
+  
   const blogReset= () => {
     newBlog.title = '',
     newBlog.author = '',
-    newBlog.url = '',
-    console.log('resetblog: ', newBlog)
+    newBlog.url = ''
   }
 
   const addBlog = async(e) => {
@@ -22,9 +22,9 @@ function BlogForm({setBlogs,blogs, notify}) {
       author: newBlog.author,
       url: newBlog.url
     }
-    console.log('newBlog: ', newBlog)
 
     try {
+      blogFormRef.current.toggleVisibility()
       const savedBlog = await blogService.create(blog)
       setBlogs(prevBlogs => prevBlogs.concat(savedBlog))
       notify('blog saved')
@@ -33,8 +33,7 @@ function BlogForm({setBlogs,blogs, notify}) {
       notify(error.response?.data?.error, false)
     }
   }
- 
-
+  
   return (
     <div>
       <h2>Add a new Blog</h2>

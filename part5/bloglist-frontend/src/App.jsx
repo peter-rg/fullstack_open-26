@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/loginForm'
 import BlogForm from './components/blogForm'
@@ -10,6 +10,8 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
+
+  const blogFormRef = useRef()
   
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -36,7 +38,24 @@ const App = () => {
     setUser(null)
     notify("Logged out successfully")
   }
+  const updateLikes = async(id) => {
+    const blogToUpdate = blogs.find(b => b.id === id)
+    if(!blogToUpdate) return
+    const updatedBlog = {...blogToUpdate, likes: blogToUpdate.likes + 1}
+    const likedBlog = await blogService.update(id, updatedBlog)
+    setBlogs(prev => prev.map(b => b.id === updatedBlog.id ? likedBlog : b))
+  }
+  const deleteBlog = async(id) => {
+    const blogToDelete = blogs.find(b => b.id === id)
+    const {title, author} = blogToDelete
+    const confirmDelete = confirm(`Remove blog ${title} by ${author}`)
+    if(!confirmDelete) return
 
+    await blogService.deleteBlog(id)
+    setBlogs(prev => prev.filter(b => b.id !== id))
+  }
+
+  const orderBlogsByLikes = blogs.toSorted((a,b) => b.likes - a.likes)
   return (
     <div>
       <Notifications message={message}/>
@@ -56,9 +75,9 @@ const App = () => {
               </h1>
               <button onClick={handleLogout}>Logout</button>
               <br />
-              <Toggable label='create new blog'>
+              <Toggable label='create new blog' ref={blogFormRef}>
                 <BlogForm 
-                  blogs={blogs}
+                  blogFormRef={blogFormRef}
                   setBlogs= {setBlogs} 
                   notify = {notify}
                 />
@@ -68,8 +87,10 @@ const App = () => {
       }
       <h2>blogs</h2>
       {
-        blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+        orderBlogsByLikes.map(blog =>
+          <Blog key={blog.id} blog={blog} user={user}
+            updateLikes={updateLikes} deleteBlog={deleteBlog}
+          />
         )
       }
     </div>

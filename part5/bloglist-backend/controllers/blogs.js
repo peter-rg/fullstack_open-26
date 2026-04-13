@@ -62,7 +62,7 @@ blogsRouter.put('/:id', async(req,res) => {
     req.params.id,
     {likes},
     {new: true}
-  )
+  ).populate('user', {blogs : 0})
 
   if(!updatedBlog){
     return res.status(404).json({error: 'blog not found'})
