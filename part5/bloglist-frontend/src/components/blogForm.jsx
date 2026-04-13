@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-function BlogForm({ setBlogs, user, blogFormRef, notify }) {
+function BlogForm({ createBlog }) {
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -9,11 +8,11 @@ function BlogForm({ setBlogs, user, blogFormRef, notify }) {
   })
 
 
-  const blogReset= () => {
-    newBlog.title = '',
-    newBlog.author = '',
-    newBlog.url = ''
-  }
+  const blogReset= () => setNewBlog({
+    title: '',
+    author: '',
+    url: ''
+  })
 
   const addBlog = async(e) => {
     e.preventDefault()
@@ -22,35 +21,35 @@ function BlogForm({ setBlogs, user, blogFormRef, notify }) {
       author: newBlog.author,
       url: newBlog.url
     }
-
-    try {
-      blogFormRef.current.toggleVisibility()
-      blogService.setToken(user.token)
-      const savedBlog = await blogService.create(blog)
-      setBlogs(prevBlogs => prevBlogs.concat(savedBlog))
-      notify('blog saved')
-      blogReset()
-    } catch (error) {
-      notify(error.response?.data?.error, false)
-    }
+    const success = await createBlog(blog)
+    if(success) blogReset()
   }
 
   return (
     <div>
       <h2>Add a new Blog</h2>
       <form onSubmit={addBlog}>
-        Title:
-        <input type="text" value={newBlog.title}
-          onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
-        /><br />
-        Author:
-        <input type="text" value={newBlog.author}
-          onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
-        /> <br />
-        Url:
-        <input type="text" value={newBlog.url}
-          onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
-        /> <br />
+        <label>
+          Title
+          <input type="text" value={newBlog.title}
+            onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
+          />
+        </label>
+        <br />
+        <label>
+          Author
+          <input type="text" value={newBlog.author}
+            onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
+          />
+        </label>
+        <br />
+        <label>
+          Url
+          <input type="text" value={newBlog.url}
+            onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
+          />
+        </label>
+        <br />
         <button>Save</button>
       </form>
     </div>

@@ -26,7 +26,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
       <button onClick={() => updateLikes(blog.id)}>like</button>
       <p>{blog.author}</p>
       {
-        user?.username === blog.user.username &&
+        user?.username === blog.user?.username &&
           <button onClick={() => deleteBlog(blog.id)}>Delete</button>
       }
     </>
@@ -35,7 +35,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   return <div className='blog'>
     {
       showAll
-        ? blogDetails()
+        ? <div className='blogHighlight'>{blogDetails()}</div>
         : blogPreview()
     }
 

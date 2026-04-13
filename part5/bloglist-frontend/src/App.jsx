@@ -47,6 +47,19 @@ const App = () => {
     const likedBlog = await blogService.update(id, updatedBlog)
     setBlogs(prev => prev.map(b => b.id === updatedBlog.id ? likedBlog : b))
   }
+  const addBlog = async(newBlog) => {
+    try {
+      blogFormRef.current.toggleVisibility()
+      blogService.setToken(user.token)
+      const savedBlog = await blogService.create(newBlog)
+      setBlogs(prevBlogs => prevBlogs.concat(savedBlog))
+      notify('blog saved')
+      return true
+    } catch (error) {
+      notify(error.response?.data?.error, false)
+      return false
+    }
+  }
   const deleteBlog = async(id) => {
     const blogToDelete = blogs.find(b => b.id === id)
     const { title, author } = blogToDelete
@@ -78,12 +91,7 @@ const App = () => {
             <button onClick={handleLogout}>Logout</button>
             <br />
             <Toggable label='create new blog' ref={blogFormRef}>
-              <BlogForm
-                user={user}
-                blogFormRef={blogFormRef}
-                setBlogs= {setBlogs}
-                notify = {notify}
-              />
+              <BlogForm createBlog={addBlog}/>
             </Toggable>
           </>
         )

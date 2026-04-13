@@ -26,6 +26,9 @@ body{
 .blog{
   margin: 8px;
   padding: 5px;
+}
+.blogHighlight{
   border: 2px solid;
   border-radius: 8px;
+  padding-left: 5px;
 }
