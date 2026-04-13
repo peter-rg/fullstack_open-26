@@ -11,6 +11,9 @@ const errorHandler = (error,req,res,next) => {
   if(error.name === "MongoServerError" && error.code === 11000){
     return res.status(400).json({error: "Expected username to be unique"})
   }
+  if(error.name === "JsonWebTokenError"){
+    return res.status(401).json({error: "Invalid token"})
+  }
 
   next(error)
 }
