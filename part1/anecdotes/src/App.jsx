@@ -49,7 +49,7 @@ const App = () => {
     <div>
       <h2>Anecdote of the day</h2>
       {anecdotes[selected]} <br />
-      {selected} has {votes[selected]} votes <br />
+      has {votes[selected]} votes <br />
       <button onClick={handleVote}>vote</button>
       <button onClick={randomAnecdote}>nextanecdote</button>
       <h2>Anecdote with most votes</h2>
