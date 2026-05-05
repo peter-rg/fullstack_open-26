@@ -44,13 +44,26 @@ function App() {
           id: 2
         }
       ]
+    },
+    {
+      name: "Next Js",
+      id:5,
+      parts: [
+        {
+          name: "Static site generation",
+          exercises: 2
+        },
+        {
+          name: "page router",
+          exercises: 11,
+        }
+      ]
     }
   ]
    return(
     <>
       <h1>Web development curriculum</h1>
-      <Course course={courses[0]}/>
-      <Course course= {courses[1]}/>
+      {courses.map((course, index)=> <Course key={index} course={course} />)}
     </>
    )
 }

@@ -13,18 +13,18 @@ const Header =(props)=>{
   return (<h2>{props.course}</h2>)}
 
 const Total = ({parts}) => {
-//   console.log("partstotal", parts[0].name);
-//   console.log("len", parts.length)
+  //console.log("len", parts.length)
   
   // let total =0
   // for (let i=0; i<parts.length; i++){
   //   total+=parts[i].exercises
   // }
 
-  // parts.map((__,index )=> total +=parts[index].exercises)
+  // parts.map((part)=> total +=part.exercises)
+  // console.log("total", total)
   
   let total = parts.reduce((value, sum) => value+sum.exercises, 0)
-//   console.log("sum", total)
+  console.log("sum", total)
 
   return (
     <h4>total of {total} exercises</h4>
