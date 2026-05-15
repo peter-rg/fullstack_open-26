@@ -32,12 +32,12 @@ function App() {
     
   }
     const passedProps= {
-    newName: newName,
-    newContact: newContact,
-    handleName: handleName,
-    handleContact: handleContact,
-    filterName: filterName,
-    handleFilterName: handleFilterName
+    newName,
+    newContact,
+    filterName,
+    handleName,
+    handleContact,
+    handleFilterName
   }
 
   return (
@@ -81,7 +81,7 @@ const Persons =({passedProps, persons})=>{
 }
 
 const PersonForm =({passedProps, addContact})=>{
-  const {newName, newContact, handleName, handleContact, ...rest}=passedProps
+  const {newName, newContact, handleName, handleContact}=passedProps
 
   return (
     <form onSubmit={addContact}>
