@@ -1,34 +1,34 @@
 {
   "persons": [
     {
-      "name": "Dan Abramov",
-      "contact": "12-43-234345",
-      "id": "3"
+      "name": "Alvin",
+      "contact": "172927681",
+      "id": "3EHRclko7Bs"
     },
     {
-      "name": "Mary Poppendieck",
-      "contact": "39-23-6423122",
-      "id": "4"
+      "name": "martha",
+      "contact": "976543",
+      "id": "ed2vHZQag5M"
     },
     {
-      "name": "bae",
-      "contact": "478390",
-      "id": "IGdiEmJ0f7M"
+      "name": "jane",
+      "contact": "567489302",
+      "id": "PqaRWpgYPXw"
     },
     {
-      "name": "why",
-      "contact": "64738920",
-      "id": "2pFxHvPqO-Y"
+      "name": "rodgers",
+      "contact": "74927202",
+      "id": "Lp6GXmJoBD8"
     },
     {
-      "name": "mum",
+      "name": "jona",
       "contact": "12",
-      "id": "chVMU-jw8Mg"
+      "id": "cabPO3UzBWU"
     },
     {
-      "name": "baby",
-      "contact": "43526",
-      "id": "0Zs2cHilxOs"
+      "name": "jk",
+      "contact": "45689",
+      "id": "fX1r6Dc7afA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

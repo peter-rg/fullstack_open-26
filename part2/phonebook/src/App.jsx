@@ -1,89 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import phoneServices from "./services/phoneServices"
-
-function App() {
-  const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newContact, setNewContact] =useState('')  
-  const [filterName, setFilterName] = useState('')
-
-  const handleName =(e)=>setNewName(e.target.value)
-  const handleContact =(e)=>setNewContact(e.target.value)
-  const handleFilterName =(e)=>setFilterName(e.target.value)
-  
-  const removePerson =(id)=>{
-    const name = persons.find(p=>p.id === id).name
-    // console.log("name", name);
-    
-    window.confirm(`Delete ${name}?`) && phoneServices
-      .remove(id)
-      .then(()=>setPersons(persons.filter(p=> p.id !==id)))
-  }
-
-  const formReset =()=>{
-    setNewName('')
-    setNewContact('')
-  }
-  const addContact =(e)=>{
-    e.preventDefault()
-    const existingContant = persons.find(person =>person.name === newName)
-
-    if (!existingContant){
-      const createdContact = {
-        name: newName,
-        contact: newContact
-      }
-      phoneServices
-        .create(createdContact)
-        .then(returnedContact =>{
-          setPersons(prevpersons=>prevpersons.concat(returnedContact)),
-          formReset()
-        })
-    }else{
-      const updatedContact = {...existingContant, contact:newContact}
-      const id = existingContant.id
-      const confirmUpdate = window.confirm(
-        `${existingContant.name} already exists. replace the old number with new one`
-      ) 
-      if(confirmUpdate){
-        phoneServices
-        .update(id, updatedContact)
-        .then(changedContact => {
-          setPersons(prevpersons =>prevpersons.map(person=>{
-            return person.id === id? changedContact : person 
-          }),
-          formReset()
-        )})
-      }
-    }   
-  }
-  const passedProps= {
-    newName,
-    newContact,
-    filterName,
-    handleName,
-    handleContact,
-    handleFilterName,
-    removePerson
-  }
-
-  useEffect(()=>{
-    phoneServices
-      .getAll()
-      .then(persons=> setPersons(persons))
-  },[])
-  return (
-    <div>
-      <h2>Phonebook</h2>
-      <Filter passedProps={passedProps}/>
-      <PersonForm passedProps={passedProps} addContact={addContact}/>
-      <h2>Numbers</h2>
-      <Persons persons={persons} passedProps={passedProps}/>  
-    </div>
-  )
-}
-
-export default App
+import Notification from './components/Notification'
 
 const Filter =({passedProps})=>{
   // console.log("props", props);
@@ -134,3 +51,118 @@ const PersonForm =({passedProps, addContact})=>{
   </form>
   )
 }
+
+function App() {
+  const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newContact, setNewContact] =useState('')  
+  const [filterName, setFilterName] = useState('')
+  const [message, setMessage] = useState("pop up")
+  const [color, setColor] = useState('green')
+  
+  const handleName =(e)=>setNewName(e.target.value)
+  const handleContact =(e)=>setNewContact(e.target.value)
+  const handleFilterName =(e)=>setFilterName(e.target.value)
+  
+  const removePerson =(id)=>{
+    const name = persons.find(p=>p.id === id).name
+    // console.log("name", name);
+    const confirmDelete =window.confirm(`Delete ${name}?`) 
+    if(confirmDelete){
+       phoneServices
+      .remove(id)
+      .then(
+        ()=>{
+          setPersons(persons.filter(p=> p.id !==id))
+          setMessage(`${name} deleted`)
+          setColor("red")
+          setTimeout(() =>setMessage(null), 5000)
+        }
+      )
+    }    
+  }
+
+  const formReset =()=>{
+    setNewName('')
+    setNewContact('')
+  }
+  const addContact =(e)=>{
+    e.preventDefault()
+    const existingContant = persons.find(person =>person.name === newName)
+
+    if (!existingContant){
+      const createdContact = {
+        name: newName,
+        contact: newContact
+      }
+      phoneServices
+        .create(createdContact)
+        .then(returnedContact =>{
+          setPersons(prevpersons=>prevpersons.concat(returnedContact));
+          formReset();
+          setMessage(`${returnedContact.name} added` )
+          setColor("green")
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+    }else{
+      const updatedContact = {...existingContant, contact:newContact}
+      const id = existingContant.id
+      const confirmUpdate = window.confirm(
+        `${existingContant.name} already exists. replace the old number with new one`
+      ) 
+      if(confirmUpdate){
+        phoneServices
+        .update(id, updatedContact)
+        .then(changedContact => {
+          setPersons(prevpersons =>prevpersons.map(person=>{
+            return person.id === id? changedContact : person 
+          }));
+          formReset();
+          setMessage(`${changedContact.name}'s number updated successfully`),
+          setColor("green")
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch((err)=>{
+          setMessage(`${existingContant.name} was already deleted from the server`);
+          setColor("red")
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+          setPersons(persons.filter(p=> p.id !==id))
+        })
+      }
+      }
+    }   
+  
+  const passedProps= {
+    newName,
+    newContact,
+    filterName,
+    handleName,
+    handleContact,
+    handleFilterName,
+    removePerson
+  }
+
+  useEffect(()=>{
+    phoneServices
+      .getAll()
+      .then(persons=> setPersons(persons))
+  },[])
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <Notification message={message} color={color}/>
+      <Filter passedProps={passedProps}/>
+      <PersonForm passedProps={passedProps} addContact={addContact}/>
+      <h2>Numbers</h2>
+      <Persons persons={persons} passedProps={passedProps}/>  
+    </div>
+  )
+}
+
+export default App
