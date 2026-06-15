@@ -1,0 +1,242 @@
+{
+  "countries": [
+    {
+      "name": { "common": "Argentina" },
+      "capital": ["Buenos Aires"],
+      "area": 2780400,
+      "languages": { "spa": "Spanish" },
+      "flags": { "png": "https://flagcdn.com/w320/ar.png" }
+    },
+    {
+      "name": { "common": "Australia" },
+      "capital": ["Canberra"],
+      "area": 7692024,
+      "languages": { "eng": "English" },
+      "flags": { "png": "https://flagcdn.com/w320/au.png" }
+    },
+    {
+      "name": { "common": "Brazil" },
+      "capital": ["Brasília"],
+      "area": 8515767,
+      "languages": { "por": "Portuguese" },
+      "flags": { "png": "https://flagcdn.com/w320/br.png" }
+    },
+    {
+      "name": { "common": "Cambodia" },
+      "capital": ["Phnom Penh"],
+      "area": 181035,
+      "languages": { "khm": "Khmer" },
+      "flags": { "png": "https://flagcdn.com/w320/kh.png" }
+    },
+    {
+      "name": { "common": "Canada" },
+      "capital": ["Ottawa"],
+      "area": 9984670,
+      "languages": { "eng": "English", "fra": "French" },
+      "flags": { "png": "https://flagcdn.com/w320/ca.png" }
+    },
+    {
+      "name": { "common": "Colombia" },
+      "capital": ["Bogotá"],
+      "area": 1141748,
+      "languages": { "spa": "Spanish" },
+      "flags": { "png": "https://flagcdn.com/w320/co.png" }
+    },
+    {
+      "name": { "common": "Comoros" },
+      "capital": ["Moroni"],
+      "area": 1862,
+      "languages": { "ara": "Arabic", "fra": "French", "zdj": "Comorian" },
+      "flags": { "png": "https://flagcdn.com/w320/km.png" }
+    },
+    {
+      "name": { "common": "Congo" },
+      "capital": ["Brazzaville"],
+      "area": 342000,
+      "languages": { "fra": "French", "kon": "Kongo", "lin": "Lingala" },
+      "flags": { "png": "https://flagcdn.com/w320/cg.png" }
+    },
+    {
+      "name": { "common": "Costa Rica" },
+      "capital": ["San José"],
+      "area": 51100,
+      "languages": { "spa": "Spanish" },
+      "flags": { "png": "https://flagcdn.com/w320/cr.png" }
+    },
+    {
+      "name": { "common": "Egypt" },
+      "capital": ["Cairo"],
+      "area": 1002450,
+      "languages": { "ara": "Arabic" },
+      "flags": { "png": "https://flagcdn.com/w320/eg.png" }
+    },
+    {
+      "name": { "common": "Finland" },
+      "capital": ["Helsinki"],
+      "area": 338424,
+      "languages": { "fin": "Finnish", "swe": "Swedish" },
+      "flags": { "png": "https://flagcdn.com/w320/fi.png" }
+    },
+    {
+      "name": { "common": "Germany" },
+      "capital": ["Berlin"],
+      "area": 357114,
+      "languages": { "deu": "German" },
+      "flags": { "png": "https://flagcdn.com/w320/de.png" }
+    },
+    {
+      "name": { "common": "Iceland" },
+      "capital": ["Reykjavík"],
+      "area": 103000,
+      "languages": { "isl": "Icelandic" },
+      "flags": { "png": "https://flagcdn.com/w320/is.png" }
+    },
+    {
+      "name": { "common": "India" },
+      "capital": ["New Delhi"],
+      "area": 3287590,
+      "languages": { "eng": "English", "hin": "Hindi" },
+      "flags": { "png": "https://flagcdn.com/w320/in.png" }
+    },
+    {
+      "name": { "common": "Indonesia" },
+      "capital": ["Jakarta"],
+      "area": 1904569,
+      "languages": { "ind": "Indonesian" },
+      "flags": { "png": "https://flagcdn.com/w320/id.png" }
+    },
+    {
+      "name": { "common": "Iran" },
+      "capital": ["Tehran"],
+      "area": 1648195,
+      "languages": { "fas": "Persian" },
+      "flags": { "png": "https://flagcdn.com/w320/ir.png" }
+    },
+    {
+      "name": { "common": "Japan" },
+      "capital": ["Tokyo"],
+      "area": 377930,
+      "languages": { "jpn": "Japanese" },
+      "flags": { "png": "https://flagcdn.com/w320/jp.png" }
+    },
+    {
+      "name": { "common": "Kenya" },
+      "capital": ["Nairobi"],
+      "area": 580367,
+      "languages": { "eng": "English", "swa": "Swahili" },
+      "flags": { "png": "https://flagcdn.com/w320/ke.png" }
+    },
+    {
+      "name": { "common": "Mexico" },
+      "capital": ["Mexico City"],
+      "area": 1964375,
+      "languages": { "spa": "Spanish" },
+      "flags": { "png": "https://flagcdn.com/w320/mx.png" }
+    },
+    {
+      "name": { "common": "New Zealand" },
+      "capital": ["Wellington"],
+      "area": 270467,
+      "languages": { "eng": "English", "mri": "Māori", "nzs": "NZ Sign Language" },
+      "flags": { "png": "https://flagcdn.com/w320/nz.png" }
+    },
+    {
+      "name": { "common": "Norway" },
+      "capital": ["Oslo"],
+      "area": 323802,
+      "languages": { "nob": "Norwegian Bokmål", "nno": "Norwegian Nynorsk" },
+      "flags": { "png": "https://flagcdn.com/w320/no.png" }
+    },
+    {
+      "name": { "common": "Peru" },
+      "capital": ["Lima"],
+      "area": 1285216,
+      "languages": { "aym": "Aymara", "que": "Quechua", "spa": "Spanish" },
+      "flags": { "png": "https://flagcdn.com/w320/pe.png" }
+    },
+    {
+      "name": { "common": "Saudi Arabia" },
+      "capital": ["Riyadh"],
+      "area": 2149690,
+      "languages": { "ara": "Arabic" },
+      "flags": { "png": "https://flagcdn.com/w320/sa.png" }
+    },
+    {
+      "name": { "common": "Senegal" },
+      "capital": ["Dakar"],
+      "area": 196722,
+      "languages": { "fra": "French" },
+      "flags": { "png": "https://flagcdn.com/w320/sn.png" }
+    },
+    {
+      "name": { "common": "Serbia" },
+      "capital": ["Belgrade"],
+      "area": 88361,
+      "languages": { "srp": "Serbian" },
+      "flags": { "png": "https://flagcdn.com/w320/rs.png" }
+    },
+    {
+      "name": { "common": "Singapore" },
+      "capital": ["Singapore"],
+      "area": 710,
+      "languages": { "eng": "English", "msa": "Malay", "tam": "Tamil", "zho": "Chinese" },
+      "flags": { "png": "https://flagcdn.com/w320/sg.png" }
+    },
+    {
+      "name": { "common": "Somalia" },
+      "capital": ["Mogadishu"],
+      "area": 637657,
+      "languages": { "ara": "Arabic", "som": "Somali" },
+      "flags": { "png": "https://flagcdn.com/w320/so.png" }
+    },
+    {
+      "name": { "common": "South Africa" },
+      "capital": ["Pretoria"],
+      "area": 1221037,
+      "languages": { "afr": "Afrikaans", "eng": "English", "nbl": "Southern Ndebele", "nso": "Northern Sotho", "sot": "Sotho", "ssw": "Swati", "tsn": "Tswana", "tso": "Tsonga", "ven": "Venda", "xho": "Xhosa", "zul": "Zulu" },
+      "flags": { "png": "https://flagcdn.com/w320/za.png" }
+    },
+    {
+      "name": { "common": "South Korea" },
+      "capital": ["Seoul"],
+      "area": 100210,
+      "languages": { "kor": "Korean" },
+      "flags": { "png": "https://flagcdn.com/w320/kr.png" }
+    },
+    {
+      "name": { "common": "Spain" },
+      "capital": ["Madrid"],
+      "area": 505992,
+      "languages": { "spa": "Spanish" },
+      "flags": { "png": "https://flagcdn.com/w320/es.png" }
+    },
+    {
+      "name": { "common": "Sri Lanka" },
+      "capital": ["Sri Jayawardenepura Kotte"],
+      "area": 65610,
+      "languages": { "sin": "Sinhala", "tam": "Tamil" },
+      "flags": { "png": "https://flagcdn.com/w320/lk.png" }
+    },
+    {
+      "name": { "common": "Sudan" },
+      "capital": ["Khartoum"],
+      "area": 1886068,
+      "languages": { "ara": "Arabic", "eng": "English" },
+      "flags": { "png": "https://flagcdn.com/w320/sd.png" }
+    },
+    {
+      "name": { "common": "Sweden" },
+      "capital": ["Stockholm"],
+      "area": 450295,
+      "languages": { "swe": "Swedish" },
+      "flags": { "png": "https://flagcdn.com/w320/se.png" }
+    },
+    {
+      "name": { "common": "Switzerland" },
+      "capital": ["Bern"],
+      "area": 41284,
+      "languages": { "fra": "French", "gsw": "Swiss German", "ita": "Italian", "roh": "Romansh" },
+      "flags": { "png": "https://flagcdn.com/w320/ch.png" }
+    }
+  ]
+}

@@ -24,7 +24,7 @@ const Persons =({passedProps, persons})=>{
       contactsToshow.map((person)=>{
         return(
             <li key={person.id}>
-              <p>{person.name} {person.contact}</p>
+              <p>{person.name} {person.number}</p>
               <button onClick={()=>removePerson(person.id)}>Delete</button>
             </li>
         )}
@@ -57,7 +57,7 @@ function App() {
   const [newName, setNewName] = useState('')
   const [newContact, setNewContact] =useState('')  
   const [filterName, setFilterName] = useState('')
-  const [message, setMessage] = useState("pop up")
+  const [message, setMessage] = useState(null)
   const [color, setColor] = useState('green')
   
   const handleName =(e)=>setNewName(e.target.value)
@@ -93,7 +93,7 @@ function App() {
     if (!existingContant){
       const createdContact = {
         name: newName,
-        contact: newContact
+        number: newContact
       }
       phoneServices
         .create(createdContact)
