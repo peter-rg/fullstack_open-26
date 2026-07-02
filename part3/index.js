@@ -28,7 +28,7 @@ app.use(express.json())
 
 // Ex 3.8
 morgan.token("post", (req)=> (
-	req.method ==="POST"? JSON.stringify(req.body) : " "
+	req.method ==="POST"? JSON.stringify(req.body)|| ' ' : " "
 ))
 //formated string format for morgan
 const tinyWithBody = ':method :url :status :res[content-length] -:response-time ms :post'
@@ -71,9 +71,13 @@ app.delete('/api/persons/:id', (req,res)=>{
 // EX 3.5
 app.post('/api/persons', (req,res)=>{
 	const contact = req.body
-	console.log("target", contact.name.toLowerCase())
-
-	const existingContact = contacts.find(c => c.name.toLowerCase() === contact.name.toLowerCase())
+	// console.log("target", contact.name.toLowerCase())
+	if(!contact){
+		return res.status(400).json({
+			error: "the body cannot be empty"
+		})
+	}
+	const existingContact = contacts.find(c => c?.name?.toLowerCase() === contact?.name?.toLowerCase())
 	console.log("exists", existingContact)
 	contact.id = Math.floor(Math.random()*30)+contacts.length
 	// EX 3.6
