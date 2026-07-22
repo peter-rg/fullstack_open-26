@@ -36,6 +36,7 @@ const tinyWithBody = ':method :url :status :res[content-length] -:response-time 
 // EX 3.7
 app.use(morgan(tinyWithBody))
 
+app.use(express.static('dist'))
 
 // EX 3.1
 app.get('/api/persons', (req,res)=>{
