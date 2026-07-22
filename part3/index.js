@@ -104,13 +104,18 @@ app.post('/api/persons', (req,res)=>{
 				error: "name must be unique"
 			})
 		}
-		
-	contact.id = String(Math.floor(Math.random()*30)+contacts.length)
+	const maxId = contacts.reduce((max, contact)=>
+		Math.max(max, contact.id),
+		0
+	)	
+	contact.id = String(maxId +1)
 	contacts = contacts.concat(contact)
 	res.json(contact)
 })
-
-
+// incorrect url is redirected to homepage
+app.get('/{*splat}', (req,res)=>{
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+})
 const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
 	console.log(`Serer running on port ${PORT}`)

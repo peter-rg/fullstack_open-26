@@ -103,6 +103,7 @@ function App() {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
+      formReset();
       }
       catch(err){
         console.log(err.response.data.error)
@@ -119,12 +120,13 @@ function App() {
         setPersons(prevpersons =>prevpersons.map(person=>{
           return person.id === id? changedContact : person 
         }));
-        formReset();
         setMessage(`${changedContact.name}'s number updated successfully`),
         setColor("green")
         setTimeout(() => {
           setMessage(null)
         }, 5000)
+        formReset();
+
       }
       catch(err){
         setMessage(`${existingContant.name} was already deleted from the server`);
