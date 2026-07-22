@@ -86,57 +86,58 @@ function App() {
     setNewName('')
     setNewContact('')
   }
-  const addContact =(e)=>{
+  const addContact =async(e)=>{
     e.preventDefault()
     const existingContant = persons.find(person =>person.name === newName)
 
     if (!existingContant){
+      try {
       const createdContact = {
         name: newName,
         number: newContact
       }
-      phoneServices
-        .create(createdContact)
-        .then(returnedContact =>{
-          setPersons(prevpersons=>prevpersons.concat(returnedContact));
-          formReset();
-          setMessage(`${returnedContact.name} added` )
-          setColor("green")
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
-        })
+      const returnedContact = await phoneServices.create(createdContact)
+      setPersons(prevpersons=>prevpersons.concat(returnedContact))
+      setMessage(`${returnedContact.name} added`)
+      setColor("green")
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+      }
+      catch(err){
+        console.log(err.response.data.error)
+      }    
     }else{
-      const updatedContact = {...existingContant, contact:newContact}
+      const updatedContact = {...existingContant, number:newContact}
       const id = existingContant.id
       const confirmUpdate = window.confirm(
         `${existingContant.name} already exists. replace the old number with new one`
-      ) 
-      if(confirmUpdate){
-        phoneServices
-        .update(id, updatedContact)
-        .then(changedContact => {
-          setPersons(prevpersons =>prevpersons.map(person=>{
-            return person.id === id? changedContact : person 
-          }));
-          formReset();
-          setMessage(`${changedContact.name}'s number updated successfully`),
-          setColor("green")
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
-        })
-        .catch((err)=>{
-          setMessage(`${existingContant.name} was already deleted from the server`);
-          setColor("red")
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
-          setPersons(persons.filter(p=> p.id !==id))
-        })
+      )
+      if(!confirmUpdate) return
+      try{
+        const changedContact = await phoneServices.update(id,updatedContact)
+        setPersons(prevpersons =>prevpersons.map(person=>{
+          return person.id === id? changedContact : person 
+        }));
+        formReset();
+        setMessage(`${changedContact.name}'s number updated successfully`),
+        setColor("green")
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       }
+      catch(err){
+        setMessage(`${existingContant.name} was already deleted from the server`);
+        setColor("red")
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+        setPersons(persons.filter(p=> p.id !==id))
+        console.log(err.response.data.error)
       }
-    }   
+    }
+  }
+  
   
   const passedProps= {
     newName,

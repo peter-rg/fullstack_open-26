@@ -72,23 +72,28 @@ app.delete('/api/persons/:id', (req,res)=>{
 app.post('/api/persons', (req,res)=>{
 	const contact = req.body
 	// console.log("target", contact.name.toLowerCase())
-	if(!contact){
+	if(!contact || Object.keys(contact).length === 0){
 		return res.status(400).json({
 			error: "the body cannot be empty"
 		})
 	}
 	const existingContact = contacts.find(c => c?.name?.toLowerCase() === contact?.name?.toLowerCase())
 	console.log("exists", existingContact)
-	contact.id = Math.floor(Math.random()*30)+contacts.length
 	// EX 3.6
 		if(!contact.name){
 			return res.status(400).json({
 				error: "name is missing"
 			})
 		}
-		else if(!contact.number){
+		if(!contact.number){
+		
 			return res.status(400).json({
 				error: "number is missing"
+			})
+		}
+		if(!/^\+?\d+(?:[ -]?\d+)*$/.test(contact.number)){
+			return res.status(400).json({
+				error: "invalid phone number format"
 			})
 		}
 
@@ -98,13 +103,14 @@ app.post('/api/persons', (req,res)=>{
 				error: "name must be unique"
 			})
 		}
-
+		
+	contact.id = String(Math.floor(Math.random()*30)+contacts.length)
 	contacts = contacts.concat(contact)
-	res.json(contacts)
+	res.json(contact)
 })
 
 
 
 app.listen(3001, ()=>{
-	console.log('Server running on port 3000')
+	console.log('Server running on port 3001')
 })

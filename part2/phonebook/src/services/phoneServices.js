@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseUrl = "http://localhost:3000/persons"
+const baseUrl = "/api/persons"
 const create = async(newObject)=>{
     const res = await axios.post(baseUrl, newObject)
     return res.data
