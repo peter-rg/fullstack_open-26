@@ -1,5 +1,6 @@
 const express = require("express")
 const morgan = require('morgan')
+const Person = require('./models/contacts')
 
 let contacts = [
 	{ 
@@ -40,7 +41,13 @@ app.use(express.static('dist'))
 
 // EX 3.1
 app.get('/api/persons', (req,res)=>{
-	res.json(contacts)
+	Person.find({})
+		.then(contacts => res.status(200).json(contacts))
+		.catch(err=> res.status(500).json(
+			{
+				message: 'Database error'
+			}
+		))
 })
 // EX 3.2
 app.get('/info', (req,res)=>{
