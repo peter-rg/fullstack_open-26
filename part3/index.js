@@ -41,6 +41,7 @@ app.use(express.static('dist'))
 
 // EX 3.1
 app.get('/api/persons', (req,res)=>{
+	// EX 3.13
 	Person.find({})
 		.then(contacts => res.status(200).json(contacts))
 		.catch(err=> res.status(500).json(
@@ -79,14 +80,14 @@ app.delete('/api/persons/:id', (req,res)=>{
 // EX 3.5
 app.post('/api/persons', (req,res)=>{
 	const contact = req.body
-	// console.log("target", contact.name.toLowerCase())
+
 	if(!contact || Object.keys(contact).length === 0){
 		return res.status(400).json({
 			error: "the body cannot be empty"
 		})
 	}
-	const existingContact = contacts.find(c => c?.name?.toLowerCase() === contact?.name?.toLowerCase())
-	console.log("exists", existingContact)
+	// const existingContact = contacts.find(c => c?.name?.toLowerCase() === contact?.name?.toLowerCase())
+	// console.log("exists", existingContact)
 	// EX 3.6
 		if(!contact.name){
 			return res.status(400).json({
@@ -106,19 +107,23 @@ app.post('/api/persons', (req,res)=>{
 		}
 
 		
-		if(existingContact){
-			return res.status(400).json({
-				error: "name must be unique"
-			})
-		}
-	const maxId = contacts.reduce((max, contact)=>
-		Math.max(max, contact.id),
-		0
-	)	
-	contact.id = String(maxId +1)
-	contacts = contacts.concat(contact)
-	res.json(contact)
+		// if(existingContact){
+		// 	return res.status(400).json({
+		// 		error: "name must be unique"
+		// 	})
+		// }
+
+	const person = new Person({
+		name: contact.name,
+		number: contact.number
+	})
+	person.save()
+		.then(contact=> res.status(200).json(contact))
+		.catch(err => res.status(500).json(
+			{message: 'An error occured'}
+		))
 })
+
 // incorrect url is redirected to homepage
 app.get('/{*splat}', (req,res)=>{
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
