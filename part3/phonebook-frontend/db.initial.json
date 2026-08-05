@@ -1,0 +1,170 @@
+{
+  "persons": [
+    {
+      "id": "1",
+      "name": "Arto Hellas",
+      "number": "040-123456"
+    },
+    {
+      "id": "2",
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523"
+    },
+    {
+      "id": "3",
+      "name": "Dan Abramov",
+      "number": "12-43-234345"
+    },
+    {
+      "id": "4",
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122"
+    },
+    {
+      "id": "5",
+      "name": "Alan Turing",
+      "number": "01-2345-6789"
+    },
+    {
+      "id": "6",
+      "name": "Alex Smith",
+      "number": "555-0199"
+    },
+    {
+      "id": "7",
+      "name": "Alexander Raymond",
+      "number": "555-0143"
+    },
+    {
+      "id": "8",
+      "name": "Alice Johnson",
+      "number": "415-555-2671"
+    },
+    {
+      "id": "9",
+      "name": "Alicia Keys",
+      "number": "212-555-0100"
+    },
+    {
+      "id": "10",
+      "name": "Bob Miller",
+      "number": "650-555-0122"
+    },
+    {
+      "id": "11",
+      "name": "Charles Babbage",
+      "number": "020-7946-0958"
+    },
+    {
+      "id": "12",
+      "name": "David Malan",
+      "number": "617-495-1000"
+    },
+    {
+      "id": "13",
+      "name": "Grace Hopper",
+      "number": "703-555-0188"
+    },
+    {
+      "id": "14",
+      "name": "John Doe",
+      "number": "202-555-0111"
+    },
+    {
+      "id": "15",
+      "name": "Johnny Cash",
+      "number": "615-555-0155"
+    },
+    {
+      "id": "16",
+      "name": "Jonathan Hyde",
+      "number": "312-555-0177"
+    },
+    {
+      "id": "17",
+      "name": "Jon Snow",
+      "number": "000-000-0001"
+    },
+    {
+      "id": "18",
+      "name": "Linus Torvalds",
+      "number": "503-555-0191"
+    },
+    {
+      "id": "19",
+      "name": "Maria Garcia",
+      "number": "305-555-0134"
+    },
+    {
+      "id": "20",
+      "name": "Marcus Aurelius",
+      "number": "100-000-0100"
+    },
+    {
+      "id": "21",
+      "name": "Margaret Hamilton",
+      "number": "617-555-0144"
+    },
+    {
+      "id": "22",
+      "name": "Martin Fowler",
+      "number": "206-555-0166"
+    },
+    {
+      "id": "23",
+      "name": "Michael Jordan",
+      "number": "312-555-0233"
+    },
+    {
+      "id": "24",
+      "name": "Robert Martin",
+      "number": "847-555-0199"
+    },
+    {
+      "id": "25",
+      "name": "Rob Thomas",
+      "number": "407-555-0121"
+    },
+    {
+      "id": "26",
+      "name": "Roberta Flack",
+      "number": "212-555-0182"
+    },
+    {
+      "id": "27",
+      "name": "Sarah Connor",
+      "number": "213-555-1984"
+    },
+    {
+      "id": "28",
+      "name": "Sam Altman",
+      "number": "415-555-0150"
+    },
+    {
+      "id": "29",
+      "name": "Tim Berners-Lee",
+      "number": "01-865-5551"
+    },
+    {
+      "id": "30",
+      "name": "Thomas Edison",
+      "number": "973-555-0112"
+    },
+    {
+      "id": "31",
+      "name": "Victor Hugo",
+      "number": "33-1-555019"
+    },
+    {
+      "id": "32",
+      "name": "Winston Churchill",
+      "number": "44-20-555014"
+    },
+    {
+      "name": "petre kim",
+      "number": "9999",
+      "id": "ZYLU3YdeLaQ"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
