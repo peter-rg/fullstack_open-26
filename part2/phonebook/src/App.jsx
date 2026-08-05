@@ -88,7 +88,7 @@ function App() {
   }
   const addContact =async(e)=>{
     e.preventDefault()
-    const existingContant = persons.find(person =>person.name === newName)
+    const existingContant = persons.find(person =>person.name?.toLowerCase() === newName.toLowerCase())
 
     if (!existingContant){
       try {
@@ -103,39 +103,59 @@ function App() {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
+      // Clears form after successful POST
       formReset();
       }
       catch(err){
-        console.log(err.response.data.error)
-      }    
-    }else{
-      const updatedContact = {...existingContant, number:newContact}
-      const id = existingContant.id
-      const confirmUpdate = window.confirm(
-        `${existingContant.name} already exists. replace the old number with new one`
-      )
-      if(!confirmUpdate) return
-      try{
-        const changedContact = await phoneServices.update(id,updatedContact)
-        setPersons(prevpersons =>prevpersons.map(person=>{
-          return person.id === id? changedContact : person 
-        }));
-        setMessage(`${changedContact.name}'s number updated successfully`),
-        setColor("green")
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-        formReset();
-
-      }
-      catch(err){
-        setMessage(`${existingContant.name} was already deleted from the server`);
+        console.error('Failed to create contact:', error)
+        setMessage(`Failed to add ${newName}`)
         setColor("red")
         setTimeout(() => {
           setMessage(null)
         }, 5000)
-        setPersons(persons.filter(p=> p.id !==id))
-        console.log(err.response.data.error)
+      }    
+    }
+    else {
+      // Guard clause: Stop early if number is empty
+      if (!newContact.trim()) {
+        setMessage("Please provide a phone number")
+        setColor("red")
+        setTimeout(() => setMessage(null), 5000)
+        return
+      }
+
+      const updatedContact = { ...existingContant, number: newContact }
+      const id = existingContant.id
+
+      const confirmUpdate = window.confirm(
+        `${existingContant.name} is already added to phonebook, replace the old number with a new one?`
+      )
+      if (!confirmUpdate) return
+
+      try {
+        const changedContact = await phoneServices.update(id, updatedContact)
+        setPersons(prevPersons =>
+          prevPersons.map(person => (person.id === id ? changedContact : person))
+        )
+        setMessage(`${changedContact.name}'s number updated successfully`)
+        setColor("green")
+        setTimeout(() => setMessage(null), 5000)
+        formReset()
+      } catch (err) {
+        // Check the specific HTTP status code
+        if (err.response?.status === 400) {
+          // Show backend validation error (e.g., "number is missing")
+          setMessage(err.response.data.error)
+        } else if (err.response?.status === 404) {
+          // Contact was actually deleted by another user
+          setMessage(`${existingContant.name} was already deleted from the server`)
+          setPersons(prevPersons => prevPersons.filter(p => p.id !== id))
+        } else {
+          setMessage("An unexpected error occurred")
+        }
+
+        setColor("red")
+        setTimeout(() => setMessage(null), 5000)
       }
     }
   }
