@@ -4,6 +4,7 @@ import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import './App.css'
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -135,7 +136,7 @@ function App() {
 
   // console.log("App passedProps:", passedProps);
   return (
-    <div>
+    <div className="phonebook-container">
       <h2>Phonebook</h2>
       <Notification message={message} color={color}/>
       <Filter passedProps={passedProps}/>
