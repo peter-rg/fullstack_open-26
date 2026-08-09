@@ -1,56 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import phoneServices from "./services/phoneServices"
 import Notification from './components/Notification'
-
-const Filter =({passedProps})=>{
-  // console.log("props", props);
-  const {filterName, handleFilterName} = passedProps
-  
-  return (
-    <div>
-      filter shown with: 
-      <input onChange={handleFilterName} value={filterName} />
-    </div>
-  )
-}
-
-const Persons =({passedProps, persons})=>{
-  const {filterName,removePerson} =passedProps
-  const contactsToshow = persons.filter(person=> new RegExp(filterName, "i").test(person.name))
-
-  return (
-    <div>
-      {
-      contactsToshow.map((person)=>{
-        return(
-            <li key={person.id}>
-              <p>{person.name} {person.number}</p>
-              <button onClick={()=>removePerson(person.id)}>Delete</button>
-            </li>
-        )}
-      )
-      }
-      {contactsToshow.length ===0 && <p>There is no name with the string <strong>{filterName}</strong></p>}
-    </div>
-  )
-}
-
-const PersonForm =({passedProps, addContact})=>{
-  const {newName, newContact, handleName, handleContact}=passedProps
-
-  return (
-    <form onSubmit={addContact}>
-    <div style={{margin: "5px"}}>
-      Name: <input  onChange={handleName}
-      value={newName} placeholder='new name'/>
-    </div>
-    <div>
-      Contact: <input onChange={handleContact} placeholder="new contact" value={newContact}/>
-    </div>
-    <button type="submit">Add</button>
-  </form>
-  )
-}
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -63,6 +16,15 @@ function App() {
   const handleName =(e)=>setNewName(e.target.value)
   const handleContact =(e)=>setNewContact(e.target.value)
   const handleFilterName =(e)=>setFilterName(e.target.value)
+
+  const showNotification = (text, type = "success") => {
+    setMessage(text);
+    setColor(type === "success" ? "green" : "red");
+    
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  };
   
   const removePerson =(id)=>{
     const name = persons.find(p=>p.id === id).name
@@ -81,85 +43,78 @@ function App() {
       )
     }    
   }
+  const addPerson = async()=>{
+    try {
+      const createdContact = {
+        name: newName,
+        number: String(newContact)
+      }
+      const returnedContact = await phoneServices.create(createdContact)
+      setPersons(prevpersons=>prevpersons.concat(returnedContact))
+      showNotification(`${returnedContact.name} added`, 'success')
+      // Clears form after successful POST
+      formReset();
+    }
+    catch(err){
+      const errorMessage = err.response?.data?.error || 'Network error or Server is down'
+      showNotification(errorMessage, 'error')
+    } 
+  }
+  const updatePerson = async(existingContant)=>{
+  // Guard clause: Stop early if number is empty
+    if (!newContact.trim()) {
+      showNotification("Please provide a phone number", 'error')
+      return
+    }
+
+    const updatedContact = { ...existingContant, number: newContact }
+    const id = existingContant.id
+
+    const confirmUpdate = window.confirm(
+      `${existingContant.name} is already added to phonebook, replace the old number with a new one?`
+    )
+    if (!confirmUpdate) return
+
+    try {
+      const changedContact = await phoneServices.update(id, updatedContact)
+      setPersons(prevPersons =>
+        prevPersons.map(person => (person.id === id ? changedContact : person))
+      )
+      showNotification(`${changedContact.name}'s number updated successfully`, 'success')
+      formReset()
+    } catch (err) {
+      // Check the specific HTTP status code
+      if (err.response?.status === 400) {
+        // Show backend validation error (e.g., "number is missing")
+        showNotification(err.response.data.error, 'error')
+      } else if (err.response?.status === 404) {
+        // Contact was actually deleted by another user
+        showNotification(`${existingContant.name} was already deleted from the server`, 'error')
+        setPersons(prevPersons => prevPersons.filter(p => p.id !== id))
+      } else {
+        showNotification("An unexpected error occurred", 'error')
+      }
+    }
+  }
 
   const formReset =()=>{
     setNewName('')
     setNewContact('')
   }
+
   const addContact =async(e)=>{
     e.preventDefault()
     const existingContant = persons.find(person =>person.name?.toLowerCase() === newName.toLowerCase())
 
+    // Creating  new database entry of new contact/person
     if (!existingContant){
-      try {
-      const createdContact = {
-        name: newName,
-        number: newContact
-      }
-      const returnedContact = await phoneServices.create(createdContact)
-      setPersons(prevpersons=>prevpersons.concat(returnedContact))
-      setMessage(`${returnedContact.name} added`)
-      setColor("green")
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-      // Clears form after successful POST
-      formReset();
-      }
-      catch(err){
-        console.error('Failed to create contact:', error)
-        setMessage(`Failed to add ${newName}`)
-        setColor("red")
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      }    
+      addPerson()
     }
+    // updating the person number when name already exists in database
     else {
-      // Guard clause: Stop early if number is empty
-      if (!newContact.trim()) {
-        setMessage("Please provide a phone number")
-        setColor("red")
-        setTimeout(() => setMessage(null), 5000)
-        return
-      }
-
-      const updatedContact = { ...existingContant, number: newContact }
-      const id = existingContant.id
-
-      const confirmUpdate = window.confirm(
-        `${existingContant.name} is already added to phonebook, replace the old number with a new one?`
-      )
-      if (!confirmUpdate) return
-
-      try {
-        const changedContact = await phoneServices.update(id, updatedContact)
-        setPersons(prevPersons =>
-          prevPersons.map(person => (person.id === id ? changedContact : person))
-        )
-        setMessage(`${changedContact.name}'s number updated successfully`)
-        setColor("green")
-        setTimeout(() => setMessage(null), 5000)
-        formReset()
-      } catch (err) {
-        // Check the specific HTTP status code
-        if (err.response?.status === 400) {
-          // Show backend validation error (e.g., "number is missing")
-          setMessage(err.response.data.error)
-        } else if (err.response?.status === 404) {
-          // Contact was actually deleted by another user
-          setMessage(`${existingContant.name} was already deleted from the server`)
-          setPersons(prevPersons => prevPersons.filter(p => p.id !== id))
-        } else {
-          setMessage("An unexpected error occurred")
-        }
-
-        setColor("red")
-        setTimeout(() => setMessage(null), 5000)
-      }
+      updatePerson(existingContant)
     }
   }
-  
   
   const passedProps= {
     newName,
@@ -175,7 +130,10 @@ function App() {
     phoneServices
       .getAll()
       .then(persons=> setPersons(persons))
+      .catch(err => err.response?.data?.message)
   },[])
+
+  // console.log("App passedProps:", passedProps);
   return (
     <div>
       <h2>Phonebook</h2>
