@@ -19,15 +19,15 @@ if (process.argv.length < 3) {
   process.exit(1)
 }
 // If exactly 3 arguments (node, mongo.js, password), list the phonebook
-if(process.argv.length == 3){
+if(process.argv.length === 3){
   Person.find({}).then(
-    people=>{
-      console.log("phonebook:")
-      people.forEach(person=>{
+    people => {
+      console.log('phonebook:')
+      people.forEach(person => {
         console.log(`${person.name} ${person.number}`)
+      })
+      mongoose.connection.close()
     })
-    mongoose.connection.close()
-  })
   return
 }
 
@@ -43,7 +43,7 @@ const person = new Person({
   number: process.argv[4]
 })
 
-person.save().then((result)=>{
+person.save().then((result) => {
   console.log(`added ${result.name} ${result.number} to phonebook`)
   mongoose.connection.close()
 })
