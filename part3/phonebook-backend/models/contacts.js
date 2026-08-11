@@ -2,8 +2,11 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 
 const MONGO_URL = process.env.MONGODB_URL
-
-console.log('connecting to', MONGO_URL)
+if(MONGO_URL){
+  console.log('connecting to mongodb')
+}else{
+  console.log('mongodb url is missing')
+}
 mongoose.connect(MONGO_URL)
   .then(() => console.log('connected to MongoDB'))
   .catch(err => console.log('error connecting to MongoDB', err.message))
