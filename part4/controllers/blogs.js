@@ -1,20 +1,39 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog.model')
 
-blogsRouter.get('/', (req,res, next)=>{
-  Blog.find({}) 
-    .then(blogs => res.status(200).json(blogs))
-    .catch(err => next(err))
+blogsRouter.get('/', async(req,res)=>{
+  const blogs = await Blog.find({}) 
+  res.status(200).json(blogs)
+})
+blogsRouter.get('/:id', async(req,res)=>{
+  const blog = await Blog.findById(req.params.id)
+  res.status(200).json(blog)
 })
 
-blogsRouter.post('/', (req,res, next)=>{
+blogsRouter.post('/', async(req,res)=>{
   const blog = new Blog(req.body)
-  if(!blog){
-    return res.status(400).json({error: 'provide the blog details'})
+
+  const savedBlog = await blog.save()
+  res.status(201).json(savedBlog)
+})
+
+blogsRouter.delete('/:id', async(req,res) => {
+  await Blog.findByIdAndDelete(req.params.id)
+  res.status(204).end()
+})
+
+blogsRouter.put('/:id', async(req,res) => {
+  const {likes} = req.body
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    req.params.id,
+    {likes},
+    {new: true}
+  )
+
+  if(!updatedBlog){
+    return res.status(404).json({error: 'blog not found'})
   }
-  blog.save()
-    .then(blog => res.status(201).json(blog))
-    .catch(err => next(err))
+  res.status(200).json(updatedBlog)
 })
 
 module.exports = blogsRouter
