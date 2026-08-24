@@ -6,6 +6,7 @@ const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogs')
 const userRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 const app = express()
 
@@ -18,6 +19,7 @@ mongoose.connect(url)
 app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 app.get('/', (req,res)=>{
   res.status(200).send("Hello, enjoy the blogs")
