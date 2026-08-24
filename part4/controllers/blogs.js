@@ -1,8 +1,9 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog.model')
+const User = require('../models/user.model')
 
 blogsRouter.get('/', async(req,res)=>{
-  const blogs = await Blog.find({}) 
+  const blogs = await Blog.find({}).populate("user") 
   res.status(200).json(blogs)
 })
 blogsRouter.get('/:id', async(req,res)=>{
@@ -11,9 +12,27 @@ blogsRouter.get('/:id', async(req,res)=>{
 })
 
 blogsRouter.post('/', async(req,res)=>{
-  const blog = new Blog(req.body)
+  const {title, author, url, likes} = req.body
+
+  const users = await User.find({})
+  if (users.length === 0) {
+    return res.status(400).json({ error: "No users exist to assign to this blog" })
+  }
+  const index = Math.floor(Math.random()*users.length)
+  const selectedUser = users[index]
+  const userId = selectedUser._id
+
+  const blog = new Blog({
+    title, 
+    author,
+    url,
+    likes,
+    user: userId
+  })
 
   const savedBlog = await blog.save()
+  selectedUser.blogs = selectedUser.blogs.concat(savedBlog._id)
+  await selectedUser.save() 
   res.status(201).json(savedBlog)
 })
 

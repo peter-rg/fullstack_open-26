@@ -1,17 +1,39 @@
 const {test, describe, beforeEach, after} = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
-const Blog = require('../models/blog.model')
-const {initialBlogs, blogsInDb, nonExistingId} = require('./test_helper')
-const app = require('../app')
 const supertest = require('supertest')
+const bcrypt = require('bcrypt')
+
+const app = require('../app')
+const Blog = require('../models/blog.model')
+const User = require('../models/user.model')
+const {initialBlogs, blogsInDb, nonExistingId} = require('./test_helper')
 
 const api = supertest(app)
 
 describe('when there is initially some blogs saved', () => {
   beforeEach(async() => {
-  await Blog.deleteMany({})
-  await Blog.insertMany(initialBlogs)
+    await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    //create user for testing
+    const passwordHash = await bcrypt.hash('admion123', 10)
+    const user = new User({
+      name: 'root',
+      username: "superUser",
+      passwordHash
+    })
+    const savedUser = await user.save()
+    // add userId to blogs and save
+    for(let blog of initialBlogs){
+      const blogObject = new Blog({...blog, user: savedUser._id})
+      const savedBlog = await blogObject.save()
+      
+      savedUser.blogs = savedUser.blogs.concat(savedBlog._id)
+    }
+    // save the user to reflect blogs id
+    await savedUser.save()
+
   })
 
   test('all blogs are returned as json and have correct amount', async() => {
@@ -33,17 +55,20 @@ describe('when there is initially some blogs saved', () => {
   describe('addition of a new blog', () => {
     test('succeeds with valid data', async() => {
       const newBlog = {
-        author: "James alni",
-        title: "testing",
-        url: "backend/testing",
+        title: "Testing User Associations",
+        author: "Test Author",
+        url: "http://test.com",
+        likes: 2
       }
 
-      await api
+      const result = await api
         .post('/api/blogs')
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
+      assert(result.body.user) //test if a user is appended 
+      console.log("user", result.body.user)
       const blogsAtEnd = await blogsInDb()
       assert.strictEqual(blogsAtEnd.length, initialBlogs.length + 1)
 
@@ -115,9 +140,5 @@ describe('when there is initially some blogs saved', () => {
     })
   })
 })
-
-
-
-
 
 after(async() => await mongoose.connection.close())

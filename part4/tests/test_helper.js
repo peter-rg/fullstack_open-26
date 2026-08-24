@@ -1,22 +1,16 @@
 const Blog = require('../models/blog.model')
 
 const initialBlogs = [
-  {
-    "author": "James Khut",
-    "title": "Art of computer Programming",
-    "url": "computers/functionality",
-    "likes": 72
+  { 
+    title: "React patterns", 
+    author: "Michael Chan", 
+    url: "https://reactpatterns.com/", 
+    likes: 7 
   },
-  {
-    "author": "Dennis Ritchie",
-    "title": "Procedural concepts",
-    "url": "languages/generation",
-    "likes": 12
-  },
-  {
-    author: "Paul",
-    title: "contryies gdp",
-    url: 'africa/regions'
+  { title: "Go To Statement Considered Harmful", 
+    author: "Edsger W. Dijkstra", 
+    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html", 
+    likes: 5 
   }
 ]
 
