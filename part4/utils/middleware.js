@@ -18,8 +18,18 @@ const errorHandler = (error,req,res,next) => {
   next(error)
 }
 
+const tokenExtractor = (req, res, next) => {
+  const authorization = req.get('authorization')
+  if(authorization && authorization.startsWith('Bearer')){
+    req.token = authorization.replace('Bearer ', '')
+  }else{
+    req.token = null
+  }
+  next()
+}
+
 const unknownEndpoint = (req,res) => {
   res.status(404).json({error: "Unknown Endpoint"})
 }
 
-module.exports = {errorHandler, unknownEndpoint}
+module.exports = {errorHandler, tokenExtractor, unknownEndpoint}
