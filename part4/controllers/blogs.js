@@ -20,7 +20,7 @@ blogsRouter.post('/', userExtractor, async(req,res)=>{
   const {title, author, url, likes} = req.body
 
   if (!req.user) {
-    return res.status(404).json({ error: "user not found" })
+    return res.status(401).json({ error: "token missing or invalid" })
   }
 
   const blog = new Blog({
