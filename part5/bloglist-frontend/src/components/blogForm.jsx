@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-function BlogForm({setBlogs, blogFormRef, notify}) {
-   const [newBlog, setNewBlog] = useState({
-      title: '',
-      author: '',
-      url: ''
-    })
+function BlogForm({ setBlogs, user, blogFormRef, notify }) {
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
 
-  
+
   const blogReset= () => {
     newBlog.title = '',
     newBlog.author = '',
@@ -25,6 +25,7 @@ function BlogForm({setBlogs, blogFormRef, notify}) {
 
     try {
       blogFormRef.current.toggleVisibility()
+      blogService.setToken(user.token)
       const savedBlog = await blogService.create(blog)
       setBlogs(prevBlogs => prevBlogs.concat(savedBlog))
       notify('blog saved')
@@ -33,22 +34,22 @@ function BlogForm({setBlogs, blogFormRef, notify}) {
       notify(error.response?.data?.error, false)
     }
   }
-  
+
   return (
     <div>
       <h2>Add a new Blog</h2>
       <form onSubmit={addBlog}>
-        Title: 
-        <input type="text" value={newBlog.title} 
-          onChange={(e) => setNewBlog({...newBlog, title: e.target.value})} 
+        Title:
+        <input type="text" value={newBlog.title}
+          onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
         /><br />
-        Author: 
-        <input type="text" value={newBlog.author} 
-          onChange={(e)=> setNewBlog({...newBlog, author: e.target.value})}
+        Author:
+        <input type="text" value={newBlog.author}
+          onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
         /> <br />
-        Url: 
-        <input type="text" value={newBlog.url} 
-          onChange={(e) => setNewBlog({...newBlog, url: e.target.value})} 
+        Url:
+        <input type="text" value={newBlog.url}
+          onChange={(e) => setNewBlog({ ...newBlog, url: e.target.value })}
         /> <br />
         <button>Save</button>
       </form>

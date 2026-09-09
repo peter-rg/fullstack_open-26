@@ -12,9 +12,9 @@ const getAll = async() => {
 
 const create = async(newBlog) => {
   const response = await axios.post(
-    baseUrl, 
+    baseUrl,
     newBlog,
-    {headers : {'Authorization': token}}
+    { headers : { 'Authorization': token } }
   )
   return response.data
 }
@@ -26,7 +26,7 @@ const update = async(id, blogUpdate) => {
 
 const deleteBlog = async(id) => {
   const res  = await axios
-    .delete(`${baseUrl}/${id}`, {headers : {'Authorization': token}})
-  console.log("first: ", res)
+    .delete(`${baseUrl}/${id}`, { headers : { 'Authorization': token } })
+  console.log('first: ', res)
 }
 export default { getAll, create, update, deleteBlog, setToken }

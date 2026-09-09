@@ -2,11 +2,11 @@ import React, { useImperativeHandle, useState } from 'react'
 
 const Toggable = (props) => {
   const [visible, setVisible] = useState(false)
-  const hideWhenVisible = {display: visible ? 'none' : ''}
-  const showWhenInvisible = {display: visible ? '' : 'none'}
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenInvisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => setVisible(!visible)
-  useImperativeHandle(props.ref, () => ({toggleVisibility}))
+  useImperativeHandle(props.ref, () => ({ toggleVisibility }))
   return (
     <div>
       <div style={hideWhenVisible}>
@@ -17,7 +17,7 @@ const Toggable = (props) => {
         <button onClick={toggleVisibility}>Cancel</button>
       </div>
     </div>
-  
+
   )
 }
 
