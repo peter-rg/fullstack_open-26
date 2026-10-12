@@ -27,4 +27,22 @@ describe('Blog app', ()=>{
       await expect(blogElement.getByRole('button', {name: 'Delete'})).not.toBeVisible()
     })
   })
+
+  describe('deleting a blog', () => {
+    test.only('is possible only by creator', async({page})=>{
+      await login(page)
+      await createBlog(page, 'this blog can be deleted by creator')
+      await expect(page.getByText('this blog can be deleted by creator')).toBeVisible()
+
+      const blogElement = page.getByText('this blog can be deleted by creator').locator('..')
+      await blogElement.getByRole('button', {name: 'view'}).click()
+      
+      page.once('dialog', async(dialog) => {
+        await dialog.accept()
+      })
+      await blogElement.getByRole('button', {name:'Delete'}).click()
+
+      await expect(page.getByText('this blog can be deleted by creator')).not.toBeVisible() 
+    })
+  })
 })
