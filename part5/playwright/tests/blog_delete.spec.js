@@ -29,7 +29,7 @@ describe('Blog app', ()=>{
   })
 
   describe('deleting a blog', () => {
-    test.only('is possible only by creator', async({page})=>{
+    test('is possible only by creator', async({page})=>{
       await login(page)
       await createBlog(page, 'this blog can be deleted by creator')
       await expect(page.getByText('this blog can be deleted by creator')).toBeVisible()

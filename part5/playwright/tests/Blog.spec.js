@@ -1,17 +1,10 @@
 const { test, expect, describe, beforeEach } = require("@playwright/test");
-const {login, createBlog} = require('./helper')
+const {login, createBlog, createUser} = require('./helper')
 
 
 beforeEach(async ({ request, page }) => {
   const response = await request.post("/api/testing/reset");
-  await request.post("/api/users", {
-    data: {
-      name: "rymee",
-      username: "qwert",
-      password: "1234",
-    },
-  });
-  await request.post()
+  await createUser(request)
   await page.goto("/");
 });
 describe("Blog app", () => {
@@ -23,7 +16,7 @@ describe("Blog app", () => {
     test("passes with correct credentials", async ({ page }) => {
       await login(page);
       await expect(page.getByRole('button', {name: 'Logout'})).toBeVisible()
-      await expect(page.getByText("rymee")).toBeVisible();
+      await expect(page.getByText("Paul")).toBeVisible();
     });
     test('fails with wrong credentilas', async({page}) => {
       await login(page, undefined, '8292')
